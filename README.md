@@ -127,7 +127,7 @@ GET /api/rag/search?q=退换货规则
 
 API Key 只通过本地 `.env` 或环境变量注入，不写入源码和 Git。项目通过 `.gitignore` 排除 `.env`、本地数据库、Python 缓存和运行时文件；提交前应检查暂存区，避免把个人凭据或运行数据上传到远程仓库。
 
-后续接入真实部署环境时，可以将 SQLite 替换为 PostgreSQL，将本地缓存替换为 Redis，并接入 pgvector、Milvus 或 FAISS 等向量存储；ASR/TTS 也可以替换为服务端 WebSocket 流式接口。
+项目技术栈以 Python、FastAPI、LangGraph 和 Pydantic 为基础，结合 Embedding、Vector Database 与 RAG 完成商品和知识内容的语义检索。对话流程通过 LangGraph 进行状态编排，支持意图识别、槽位提取、工具调用、上下文组装、答案生成和来源追溯；语音交互采用浏览器语音输入与语音合成，配合 Trace 记录和离线评测分析 Agent 执行效果。
 
 ## Run
 
@@ -140,12 +140,12 @@ Open `http://127.0.0.1:7860`.
 
 ## LLM configuration
 
-The service uses an OpenAI-compatible model for intent understanding and open-ended questions:
+The service uses a DeepSeek model through an OpenAI-compatible API for intent understanding and open-ended questions:
 
 ```text
 LLM_API_KEY=your_api_key
-LLM_MODEL=gpt-4o-mini
-OPENAI_BASE_URL=https://api.openai.com/v1
+LLM_MODEL=deepseek-chat
+OPENAI_BASE_URL=https://api.deepseek.com/v1
 ```
 
 `OPENAI_API_KEY` is also supported. Do not commit keys or the local `data/voiceshop.db` file.
