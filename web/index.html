@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>VoiceShop AI</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#dialogue" data-view="dialogue" aria-label="返回 VoiceShop 对话页">
+          <span class="brand-mark">V</span>
+          <span><strong>VoiceShop</strong><small>AI 语音导购</small></span>
+        </a>
+        <nav class="main-nav" aria-label="主导航">
+          <button class="nav-item active" type="button" data-view="dialogue">对话</button>
+          <button class="nav-item" type="button" data-view="catalog">商品查看</button>
+          <button class="nav-item" type="button" data-view="scenes">购物场景</button>
+          <button class="nav-item" type="button" data-view="orders">我的订单</button>
+        </nav>
+        <button id="speakButton" class="outline-button" type="button">播放回复</button>
+      </header>
+
+      <section class="view active" id="dialogue" data-view-panel>
+        <div class="dialogue-intro">
+          <p class="eyebrow">VOICE SHOP / 01</p>
+          <h1>说出你想买的东西，<em>让选择变简单。</em></h1>
+          <p class="intro-copy">告诉我用途、预算和偏好，我会从商品资料中筛选并解释推荐理由。</p>
+        </div>
+
+        <section class="dialogue-layout" aria-label="AI 导购对话">
+          <div class="conversation-column">
+            <div class="conversation-head">
+              <div>
+                <span class="live-dot"></span>
+                <span>AI 导购在线</span>
+              </div>
+              <span class="conversation-hint">支持文字与语音回复</span>
+            </div>
+            <div class="conversation-body">
+              <div class="welcome-line">
+                <span class="assistant-avatar">V</span>
+                <div>
+                  <strong>今天想找什么？</strong>
+                  <p>可以直接说“预算 500 元以内的跑鞋”，也可以告诉我你的使用场景。</p>
+                </div>
+              </div>
+              <div id="conversationMessages" class="conversation-messages" aria-live="polite">
+                <div class="message user-chat is-hidden"></div>
+                <div class="message thinking-chat is-hidden" id="thinkingText">Agent 正在分析<span class="thinking-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
+                <div class="message assistant-chat is-hidden" id="answerText"></div>
+              </div>
+              <div class="recommendations-block">
+                <div class="block-heading">
+                  <div><span class="eyebrow">AGENT RESULT</span><strong id="answerTitle">等待你的需求</strong></div>
+                  <span id="assistantRecommendationCount" class="result-count">尚未筛选</span>
+                </div>
+                <div id="recommendationList" class="recommendation-list empty">你的推荐商品会显示在这里</div>
+              </div>
+            </div>
+            <div class="composer">
+              <div class="composer-input">
+                <textarea id="query" rows="2" aria-label="输入购物需求">今天我想买个鞋子</textarea>
+                <button id="micButton" class="mic-button" type="button" aria-label="开始语音输入" aria-pressed="false" title="语音输入">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 14.5a3.5 3.5 0 0 0 3.5-3.5V6a3.5 3.5 0 1 0-7 0v5a3.5 3.5 0 0 0 3.5 3.5Z"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg>
+                </button>
+              </div>
+              <div class="composer-actions">
+                <span id="voiceStatus">按 Ctrl / ⌘ + Enter 发送，也可以使用语音输入</span>
+                <button id="runButton" class="primary-button" type="button">开始筛选 <span>↗</span></button>
+              </div>
+            </div>
+          </div>
+
+          <aside class="prompt-rail">
+            <div class="rail-heading"><span>快速开始</span><span class="rail-line"></span></div>
+            <button type="button" data-query="想买跑步鞋，预算 1200 以内，要轻一点缓震好"><strong>轻量跑鞋</strong><span>适合训练与日常通勤</span><b>↗</b></button>
+            <button type="button" data-query="想买降噪耳机，预算 2500 以内，上班通勤使用"><strong>通勤耳机</strong><span>关注降噪与续航表现</span><b>↗</b></button>
+            <button type="button" data-query="想买耐用一点的手表，预算 900 以内，日常佩戴"><strong>日常手表</strong><span>耐用、轻便、适合日常</span><b>↗</b></button>
+            <div class="rail-note"><span>TIP</span><p>需求越具体，推荐理由越贴近你的实际使用场景。</p></div>
+          </aside>
+        </section>
+      </section>
+
+      <section class="view" id="catalog" data-view-panel>
+        <div class="page-heading">
+          <div><p class="eyebrow">PRODUCTS / 02</p><h2>商品查看</h2><p>浏览全部商品，也可以回到对话让 Agent 帮你筛选。</p></div>
+          <button class="outline-button" type="button" data-view="dialogue">去问 AI 导购 ↗</button>
+        </div>
+        <div class="catalog-layout">
+          <aside class="filter-panel"><span class="filter-label">商品分类</span><button class="category active" type="button" data-category="全部">全部商品</button><button class="category" type="button" data-category="跑鞋">跑鞋</button><button class="category" type="button" data-category="耳机">耳机</button><button class="category" type="button" data-category="手表">手表</button><button class="category" type="button" data-category="口红">口红</button></aside>
+          <section class="catalog-content"><div class="catalog-toolbar"><div><strong id="catalogTitle">全部商品</strong><span id="catalogSummary">正在加载商品</span></div><span id="sortChip">精选商品</span></div><div id="catalogGrid" class="catalog-grid"></div><article id="productDetail" class="product-detail is-hidden"><div><p class="eyebrow">PRODUCT DETAIL</p><h3 id="detailName">商品详情</h3><p id="detailDescription"></p></div><div class="detail-meta"><strong id="detailPrice"></strong><button id="detailOrderButton" class="primary-button" type="button">立即下单</button></div></article></section>
+        </div>
+      </section>
+
+      <section class="view" id="scenes" data-view-panel>
+        <div class="page-heading"><div><p class="eyebrow">SCENES / 03</p><h2>购物场景</h2><p>从真实使用需求出发，快速进入一段更适合你的导购对话。</p></div></div>
+        <div class="scene-grid">
+          <button type="button" data-query="想买跑步鞋，预算 1200 以内，要轻一点缓震好"><span>01 / 运动训练</span><strong>跑鞋与缓震</strong><small>从跑步距离、脚感偏好和预算开始筛选</small><b>开始挑选 ↗</b></button>
+          <button type="button" data-query="想买降噪耳机，预算 2500 以内，上班通勤使用"><span>02 / 通勤办公</span><strong>降噪与续航</strong><small>为地铁、办公室和长时间佩戴找到平衡</small><b>开始挑选 ↗</b></button>
+          <button type="button" data-query="想买耐用一点的手表，预算 900 以内，日常佩戴"><span>03 / 日常佩戴</span><strong>耐用与搭配</strong><small>根据佩戴频率和风格偏好缩小选择范围</small><b>开始挑选 ↗</b></button>
+        </div>
+      </section>
+
+      <section class="view" id="orders" data-view-panel>
+        <div class="page-heading"><div><p class="eyebrow">ORDERS / 04</p><h2>我的订单</h2><p>查看当前 Demo 用户通过导购创建的订单记录。</p></div><button class="outline-button" type="button" data-view="dialogue">继续购物 ↗</button></div>
+        <div id="orderList" class="order-list"><div class="catalog-empty">暂时还没有订单</div></div>
+      </section>
+
+      <section class="admin-only" aria-hidden="true">
+        <div class="status-cards"><article><b id="candidateCount">0</b><span>候选商品</span></article><article><b id="slotCount">0</b><span>命中槽位</span></article><article><b id="traceCount">0</b><span>执行节点</span></article></div>
+        <dl id="slotList" class="slot-list"></dl><button id="evalButton" type="button">刷新评测</button><div id="metricGrid" class="metric-grid"></div><p id="traceId">trace pending</p><ol id="traceList" class="trace-list"></ol>
+      </section>
+    </main>
+    <script src="/app.js"></script>
+  </body>
+</html>
